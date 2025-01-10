@@ -51,16 +51,27 @@ xlabel('X-axis');                             % Label for the X-axis
 ylabel('Y-axis');                             % Label for the Y-axis
 
 %% Export plot as PDF
-% Define the output file name, including dynamic content (e.g., order number)
+
 file_name = ['test1_' num2str(order) '.pdf'];
+save_figure_as_pdf(file_name)
 
-% Set the figure size and position
-picture_size = [100, 100, 340, 280]; % [left, bottom, width, height] in pixels
-set(gcf, 'Position', picture_size);
 
-% Adjust the paper size for the PDF output
-pic_position = gcf().PaperPosition; % Get the paper position of the current figure
-set(gcf, 'PaperSize', [pic_position(3) + 0.0001, pic_position(4) + 0.0001]); % Match paper size to figure dimensions
+function [] = save_figure_as_pdf(file_name)
+    % Function to save the current figure as a PDF file with specified settings.
+    % 
+    % Parameters:
+    %   file_name (string): Name of the output PDF file (including the file extension).
+    
+    % Define the figure size and position (units are in pixels)
+    figure_size = [100, 100, 340, 280]; % [left, bottom, width, height]
+    set(gcf, 'Position', figure_size); % Set the size and position of the current figure
 
-% Export the figure to a PDF file
-print('-dpdf', file_name);
+    % Adjust the paper size to match the figure size
+    paper_position = get(gcf, 'PaperPosition'); % Get the current PaperPosition of the figure
+    set(gcf, 'PaperSize', [paper_position(3) + 0.0001, paper_position(4) + 0.0001]);
+    % The small offset (0.0001) is added to ensure compatibility with some PDF viewers.
+    % The offset can technically be omitted without affecting the result.
+
+    % Save the figure as a PDF file
+    print('-dpdf', file_name); % '-dpdf' specifies the output format as PDF
+end
